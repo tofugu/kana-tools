@@ -1,0 +1,4 @@
+_bower_components
+_site
+.sass-cache
+.jekyll-metadata

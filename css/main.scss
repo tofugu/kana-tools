@@ -1,0 +1,27 @@
+---
+# Only the main Sass file needs front matter (the dashes are enough)
+---
+@charset "utf-8";
+
+// Fonts
+@import
+  url(https://fonts.googleapis.com/css?family=Noto+Sans:400,400italic,700,700italic),
+  url(https://fonts.googleapis.com/css?family=Montserrat:400,700);
+;
+
+// Overrides and variables
+@import
+  "colors",
+  "bootstrap_defaults"
+;
+
+// Dependencies
+@import
+  "../_bower_components/bootstrap/scss/bootstrap"
+;
+
+// Import partials from `sass_dir` (defaults to `_sass`)
+@import
+  "layout",
+  "tools/ime-practice"
+;

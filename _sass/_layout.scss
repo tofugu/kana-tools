@@ -1,0 +1,11 @@
+[lang=ja] { font-family: "source-han-sans-japanese", sans-serif; }
+
+h1, h2, h3, h4, h5, h6 { 
+  font-weight: bold;
+  text-transform: uppercase;
+  &.invert { color: $white; }
+  &.mini { font-size: 1rem; }
+  &.muted { opacity: 0.25; }
+}
+
+input { font-family: $font-family-base; }

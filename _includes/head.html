@@ -1,0 +1,32 @@
+<head>
+  <title>{% if page.title %}{{ page.title | escape }}{% else %}{{ site.title | escape }}{% endif %}</title>
+
+  <!-- Generic meta data -->
+  <meta charset="utf-8">
+  <meta content="IE=edge" http-equiv="X-UA-Compatible">
+  <meta content="yes" name="apple-mobile-web-app-capable">
+  <meta content="yes" name="mobile-web-app-capable">
+  <meta content="width=device-width, initial-scale=1, user-scalable=no" name="viewport">
+  <meta content="notranslate" name="google">
+
+  <!-- Page meta data -->
+  <meta content="{% if page.authors %}{{ page.authors | join: ', ' | escape }}{% else %}{{ site.title | escape }}{% endif %}" name="author">
+  <meta content="{% if page.seo_description %}{{ page.seo_description | escape }}{% elsif page.description %}{{ page.description | escape }}{% else %}{{ site.description | escape }}{% endif %}" name="description">
+  <meta content="{% if page.keywords %}{{ page.keywords | join: ', ' }}{% else %}{{ site.keywords | join: ', ' }}{% endif %}" name="keywords">
+
+  <!-- Facebook data -->
+  <!-- Open Graph data -->
+  <!-- Twitter Card data -->
+  <!-- Schema.org markup -->
+
+  <!-- Generic link data -->
+  <link rel="stylesheet" href="{{ "/css/main.css" | prepend: site.baseurl }}">
+  <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}">
+  <link rel="alternate" type="application/rss+xml" title="{{ site.title }}" href="{{ "/feed.xml" | prepend: site.baseurl | prepend: site.url }}">
+
+  <!-- Favicon data -->
+
+  <!-- JavaScript -->
+  <script src="https://use.typekit.net/ppy6rjq.js"></script>
+  <script>try{Typekit.load({ async: true });}catch(e){}</script>
+</head>

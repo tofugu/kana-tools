@@ -1,0 +1,64 @@
+.ime-practice {
+  background-color: $red;
+  .additional-sentence-information, .basic-kana-sentence, .error-history, .user-input { padding: 3rem; }
+  .additional-sentence-information {
+    background-color: $white;
+    dl { 
+      margin-top: 1rem;
+      color: $gray-light;
+      font-size: 1.25rem;
+    }
+  }
+  .basic-kana-sentence {
+    background-color: $base02;
+    ul {
+      display: block;
+      margin: 0;
+      padding: 0;
+      li {
+        display: inline-block;
+        border-radius: 3px;
+        color: $white;
+        cursor: default;
+        font-size: 3rem;
+        vertical-align: top;
+        &:hover { background-color: rgba($white, 0.1); }
+        &.correct { 
+          color: $cyan;
+          .character-input mark { background-color: $cyan; }
+        }
+        &.incorrect { color: $red; }
+        .character-input {
+          margin-top: 0.5rem;
+          font-family: $font-family-base;
+          font-size: 0.8rem;
+          font-weight: bold;
+          text-align: center;
+          mark {
+            display: inline-block;
+            margin-bottom: 0.5rem;
+            width: calc(100% - 1em);
+            border-radius: 3px;
+            color: $base02;
+            opacity: 0.5;
+          }
+        }
+      }
+    }
+  }
+  .error-history {
+    background-color: $red;
+  }
+  .user-input {
+    background-color: $gray-lighter;
+    input[type=text] {
+      width: 100%;
+      background-color: transparent;
+      border: none;
+      border-bottom: thin solid lighten($gray-light, 25%);
+      color: $gray-light;
+      font-size: 2rem;
+      outline: none;
+    }
+  }
+}

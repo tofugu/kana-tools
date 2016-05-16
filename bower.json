@@ -1,0 +1,21 @@
+{
+  "name": "kana-tools",
+  "version": "0.0.0",
+  "authors": [
+    "Kim Ahlström <kim@tofugu.com>",
+    "Viet Hoang <viet@tofugu.com>"
+  ],
+  "description": "A repository of Japanese kana related tools for https://kana.tools",
+  "license": "MIT",
+  "homepage": "https://www.github.com/tofugu/kana-tools",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "4.0.0-alpha.2"
+  }
+}
