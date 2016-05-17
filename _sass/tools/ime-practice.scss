@@ -1,33 +1,44 @@
 .ime-practice {
-  background-color: $red;
-  .additional-sentence-information, .basic-kana-sentence, .error-history, .user-input { padding: 3rem; }
+  background-color: $gray-lighter;
+  ul.sentence {
+    display: block;
+    margin: 0;
+    padding: 0;
+    li {
+      display: inline-block;
+      border-radius: 3px;
+      cursor: default;
+      vertical-align: top;
+      &.correct { 
+        color: $cyan;
+        .character-input mark { 
+          background-color: $cyan;
+        }
+      }
+      &.incorrect { color: $red; }
+    }
+  }
+  .additional-sentence-information, .basic-kana-sentence, .error-history, .user-input { 
+    padding: 3rem;
+    > h2 { margin-bottom: 1rem; }
+  }
   .additional-sentence-information {
-    background-color: $white;
+    padding-bottom: 0;
+    background-color: $gray-lighter;
     dl { 
-      margin-top: 1rem;
       color: $gray-light;
       font-size: 1.25rem;
     }
   }
   .basic-kana-sentence {
-    background-color: $base02;
+    background-color: $gray-lighter;
     ul {
-      display: block;
-      margin: 0;
-      padding: 0;
       li {
-        display: inline-block;
-        border-radius: 3px;
-        color: $white;
-        cursor: default;
+        color: $gray-light;
         font-size: 3rem;
-        vertical-align: top;
-        &:hover { background-color: rgba($white, 0.1); }
-        &.correct { 
-          color: $cyan;
-          .character-input mark { background-color: $cyan; }
+        &.correct {
+          &:hover { background-color: darken($gray-lighter, 5%); }
         }
-        &.incorrect { color: $red; }
         .character-input {
           margin-top: 0.5rem;
           font-family: $font-family-base;
@@ -38,8 +49,9 @@
             display: inline-block;
             margin-bottom: 0.5rem;
             width: calc(100% - 1em);
+            color: $gray-lighter;
+            background-color: transparent;
             border-radius: 3px;
-            color: $base02;
             opacity: 0.5;
           }
         }
@@ -47,18 +59,44 @@
     }
   }
   .error-history {
-    background-color: $red;
+    background-color: $gray-lighter;
+    ul.sentence { 
+      font-size: 1.25rem;
+      li {
+        &.incorrect { font-weight: bold; }
+      }
+    }
+    .label-correct, .label-incorrect {
+      &:before { 
+        margin-right: 0.5em;
+        color: rgba($white, 0.3);
+        font-family: 'FontAwesome';
+      }
+    }
+    .label-incorrect {
+      background-color: $red;
+      &:before { content: '\f00d'; }
+    }
+    .label-correct {
+      background-color: $cyan;
+      &:before { content: '\f00c'; }
+    }
   }
   .user-input {
-    background-color: $gray-lighter;
+    background-color: $base02;
     input[type=text] {
       width: 100%;
       background-color: transparent;
       border: none;
-      border-bottom: thin solid lighten($gray-light, 25%);
-      color: $gray-light;
+      border-bottom: thin solid rgba($white, 0.25);
+      color: $white;
       font-size: 2rem;
+      font-weight: bold;
       outline: none;
+      &.incorrect {
+        border-bottom-color: $red;
+        color: red;
+      }
     }
   }
 }
