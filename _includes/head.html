@@ -20,7 +20,7 @@
   <!-- Schema.org markup -->
 
   <!-- Generic link data -->
-  <link rel="stylesheet" href="{{ "/css/main.css" | prepend: site.baseurl }}">
+  {% stylesheet master %}
   <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}">
   <link rel="alternate" type="application/rss+xml" title="{{ site.title }}" href="{{ "/feed.xml" | prepend: site.baseurl | prepend: site.url }}">
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
@@ -28,6 +28,7 @@
   <!-- Favicon data -->
 
   <!-- JavaScript -->
+  {% javascript master %}
   <script src="https://use.typekit.net/ppy6rjq.js"></script>
   <script>try{Typekit.load({ async: true });}catch(e){}</script>
 </head>

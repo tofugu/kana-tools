@@ -5,13 +5,18 @@
 # For technical reasons, this file is *NOT* reloaded automatically when you use
 # 'jekyll serve'. If you change this file, please restart the server process.
 
+# Gems
+gems:
+  - jekyll-assets
+  - jekyll-coffeescript
+
 # Site settings
 title: kana.tools
 email: hello@kana.tools
 description: > # this means to ignore newlines until "baseurl:"
   A repository of Japanese kana related tools hosted by Tofugu
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "https://kana.tools" # the base hostname & protocol for your site
+url: "http://kana.tools" # the base hostname & protocol for your site
 twitter_username: kanatools
 # github_username:  jekyll
 keywords:
@@ -33,3 +38,13 @@ defaults:
       type: tools
     values:
       layout: tool
+
+# jekyll-assets settings
+assets:
+  compress:
+    css: default
+    js: default
+    # cdn: 
+    prefix: '/assets'
+  sources:
+    - _assets/bower
