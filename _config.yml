@@ -48,3 +48,4 @@ assets:
     prefix: '/assets'
   sources:
     - _assets/bower
+    - _assets/data
