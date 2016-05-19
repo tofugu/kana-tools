@@ -45,7 +45,8 @@ assets:
     css: default
     js: default
     # cdn: 
-    prefix: '/assets'
+  assets:
+    - "data-*.json"
   sources:
     - _assets/bower
     - _assets/data
