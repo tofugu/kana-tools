@@ -51,6 +51,8 @@ var AppBox = React.createClass({
       return this.handleInputComplete();
     }
 
+    // Continue if user input does not complete match current character group of accetable romaji
+
     // If the user input doesn't completely match, check if it is a substring match
     // If not, send an incorrect input flag
     var correctInputsSubstrings = correctInputs.map(function(romaji) {
