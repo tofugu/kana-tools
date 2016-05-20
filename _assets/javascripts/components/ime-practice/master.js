@@ -20,6 +20,7 @@ var AppBox = React.createClass({
       dataType: 'json',
       cache: false,
       success: function(data) {
+        // Below is placeholder data until the kana tables are complete (can't process katakana and some missing hiragana groups)
         var placeholder = [
           {
             "id": 75,
@@ -35,6 +36,7 @@ var AppBox = React.createClass({
           }
         ]
         this.setState({sentences: placeholder});
+        // this.setState({sentences: data});
         this.setActiveSentence();
       }.bind(this),
       error: function(xhr, status, err) {
@@ -82,6 +84,7 @@ var AppBox = React.createClass({
     return { inputComplete: true, sentenceComplete: isSentenceComplete };
   },
   handleSentenceComplete: function() {
+    // Set new, random active sentence
     this.setActiveSentence();
   },
   kanaToRomaji: function(kana) {
