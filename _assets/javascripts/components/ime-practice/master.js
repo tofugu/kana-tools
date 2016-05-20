@@ -33,6 +33,30 @@ var AppBox = React.createClass({
             "bun": "私は、妻のことをもう好きじゃないのかもしれない。",
             "kana": "わたしは、つまのことをもうすきじゃないのかもしれない。",
             "eng": "I may not love my wife anymore."
+          },
+          {
+            "id": 16,
+            "bun": "髪を茶色くするつもりです。",
+            "kana": "かみをちゃいろくするつもりです。",
+            "eng": "I'm thinking of making my hair color brown."
+          },
+          {
+            "id": 20,
+            "bun": "赤ちゃんは、今にも眠りそうです。",
+            "kana": "あかちゃんは、いまにもねむりそうです。",
+            "eng": "The baby looks jsut about to fell asleep."
+          },
+          {
+            "id": 21,
+            "bun": "あなたの宿題を手伝いたいんです。",
+            "kana": "あなたのしゅくだいをてつだいたいんです。",
+            "eng": "I want to help your homework."
+          },
+          {
+            "id": 28,
+            "bun": "彼はハンサムだし、頭もいい。",
+            "kana": "かれははんさむだし、あたまもいい。",
+            "eng": "He is handsome and smart."
           }
         ]
         this.setState({sentences: placeholder});
