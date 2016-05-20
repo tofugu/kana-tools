@@ -84,6 +84,12 @@
   }
   .user-input {
     background-color: $base02;
+    &.incorrect {
+      input[type=text] {
+        border-bottom-color: $red;
+        color: red;
+      }
+    }
     input[type=text] {
       width: 100%;
       background-color: transparent;
@@ -93,10 +99,6 @@
       font-size: 2rem;
       font-weight: bold;
       outline: none;
-      &.incorrect {
-        border-bottom-color: $red;
-        color: red;
-      }
     }
   }
 }
