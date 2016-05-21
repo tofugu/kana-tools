@@ -20,47 +20,7 @@ var AppBox = React.createClass({
       dataType: 'json',
       cache: false,
       success: function(data) {
-        // Below is placeholder data until the kana tables are complete (can't process katakana and some missing hiragana groups)
-        var placeholder = [
-          {
-            "id": 75,
-            "bun": "今日は、胃腸の調子が悪いです。",
-            "kana": "きょうは、いちょうのちょうしがわるいです。",
-            "eng": "My stomach is upset today."
-          },
-          {
-            "id": 13,
-            "bun": "私は、妻のことをもう好きじゃないのかもしれない。",
-            "kana": "わたしは、つまのことをもうすきじゃないのかもしれない。",
-            "eng": "I may not love my wife anymore."
-          },
-          {
-            "id": 16,
-            "bun": "髪を茶色くするつもりです。",
-            "kana": "かみをちゃいろくするつもりです。",
-            "eng": "I'm thinking of making my hair color brown."
-          },
-          {
-            "id": 20,
-            "bun": "赤ちゃんは、今にも眠りそうです。",
-            "kana": "あかちゃんは、いまにもねむりそうです。",
-            "eng": "The baby looks jsut about to fell asleep."
-          },
-          {
-            "id": 21,
-            "bun": "あなたの宿題を手伝いたいんです。",
-            "kana": "あなたのしゅくだいをてつだいたいんです。",
-            "eng": "I want to help your homework."
-          },
-          {
-            "id": 28,
-            "bun": "彼はハンサムだし、頭もいい。",
-            "kana": "かれははんさむだし、あたまもいい。",
-            "eng": "He is handsome and smart."
-          }
-        ]
-        this.setState({sentences: placeholder});
-        // this.setState({sentences: data});
+        this.setState({sentences: data});
         this.setActiveSentence();
       }.bind(this),
       error: function(xhr, status, err) {
@@ -495,9 +455,6 @@ var AppBox = React.createClass({
       っふゃ: ['ffya'],
       っふゅ: ['ffyu'],
       っふょ: ['ffyo'],
-      '、': [','],
-      '。': ['.'],
-      '！': ['!'],
       ア: ["A"],
       イ: ["I"],
       ウ: ["U"],
@@ -878,7 +835,12 @@ var AppBox = React.createClass({
       ッフゥ: ["FFWU"],
       ッフャ: ["FFYA"],
       ッフュ: ["FFYU"],
-      ッフョ: ["FFYO"]
+      ッフョ: ["FFYO"],
+      'ー': ['-'],
+      '、': [','],
+      '。': ['.'],
+      '！': ['!'],
+      '・': ['/']
     }
     return kanaTable[kana]
   },
