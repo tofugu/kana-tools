@@ -869,11 +869,16 @@ var AppBox = React.createClass({
     var randomSentenceCharacterGroups = [];
 
     while (randomSentenceKana.length > 0) {
-      var potentialGroup = randomSentenceKana.substring(0,2);
-      var potentialGroupRomajiSet = _this.kanaToRomaji(potentialGroup);
+      var potentialGroupThreeChar = randomSentenceKana.substring(0,3);
+      var potentialGroupTwoChar = randomSentenceKana.substring(0,2);
+      var potentialGroupRomajiThreeChar = _this.kanaToRomaji(potentialGroupThreeChar);
+      var potentialGroupRomajiTwoChar = _this.kanaToRomaji(potentialGroupTwoChar);
 
-      if (potentialGroupRomajiSet) {
-        randomSentenceCharacterGroups.push(potentialGroup);
+      if (potentialGroupRomajiThreeChar) {
+        randomSentenceCharacterGroups.push(potentialGroupThreeChar);
+        randomSentenceKana = randomSentenceKana.slice(3);
+      } else if (potentialGroupRomajiTwoChar) {
+        randomSentenceCharacterGroups.push(potentialGroupTwoChar);
         randomSentenceKana = randomSentenceKana.slice(2);
       } else {
         randomSentenceCharacterGroups.push(randomSentenceKana.substring(0,1));
