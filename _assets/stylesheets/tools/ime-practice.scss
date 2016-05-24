@@ -23,21 +23,37 @@
     > h2 { margin-bottom: 1rem; }
   }
   .additional-sentence-information {
-    padding-bottom: 0;
-    background-color: $gray-lighter;
+    h2.invert { opacity: 0.35; }
+    background-color: $magenta;
     dl { 
-      color: $gray-light;
+      color: $white;
       font-size: 1.25rem;
     }
   }
   .basic-kana-sentence {
     background-color: $gray-lighter;
+    position: relative;
     ul {
       li {
         color: $gray-light;
         font-size: 3rem;
-        &.correct {
-          &:hover { background-color: darken($gray-lighter, 5%); }
+        &.correct, &.incorrect {
+          &:hover { 
+            background-color: darken($gray-lighter, 5%);
+            &:after {
+              position: absolute;
+              width: 100%;
+              left: 0;
+              bottom: 0;
+              padding: 0.5rem 0;
+              background-color: darken($gray-lighter, 5%);
+              content: attr(data-romajis);
+              font-family: $font-family-base;
+              font-size: 1rem;
+              line-height: 1.25em;
+              text-align: center;
+            }
+          }
         }
         .character-input {
           margin-top: 0.5rem;
@@ -80,10 +96,11 @@
           width: 4em;
         }
         &:not(:first-child) {
-          &:not(:last-child) {
-            &:after { content: ', '; }
-          }
-          color: $gray-light;
+          margin-right: 0.25em;
+          padding: 0 0.25em;
+          background-color: $gray-lighter;
+          color: $gray;
+          border-radius: 3px;
         }
       }
     }

@@ -16,22 +16,19 @@ var AppBox = React.createClass({
     };
   },
   componentDidMount: function() {
-    var errorHistory;
+    var errorHistory = JSON.parse(localStorage.getItem('errorHistory')) || [];
     $.ajax({
       url: this.props.url,
       dataType: 'json',
       cache: false,
       success: function(data) {
-        this.setState({sentences: data});
+        this.setState({sentences: data, errorHistory: errorHistory});
         this.setActiveSentence();
       }.bind(this),
       error: function(xhr, status, err) {
         console.error(this.props.url, status, err.toString());
       }.bind(this)
     });
-
-    errorHistory = JSON.parse(localStorage.getItem('errorHistory')) || [];
-    this.setState({errorHistory: errorHistory});
   },
   componentDidUpdate: function() {
     localStorage.setItem('errorHistory', JSON.stringify(this.state.errorHistory));
@@ -934,7 +931,7 @@ var AppBox = React.createClass({
   render: function() {
     return (
       <div className="app-box">
-        <VisualFeedback characterGroups={this.state.activeSentenceCharacterGroups} inputIncorrect={this.state.isInputIncorrect} currentSentencePosition={this.state.currentSentencePosition} />
+        <VisualFeedback characterGroups={this.state.activeSentenceCharacterGroups} inputIncorrect={this.state.isInputIncorrect} currentSentencePosition={this.state.currentSentencePosition} handleKanaToRomaji={this.kanaToRomaji} />
         <UserInput onInputCheck={this.handleInputCheck} onSentenceComplete={this.handleSentenceComplete} inputIncorrect={this.state.isInputIncorrect} />
         <SentenceInformation sentence={this.state.activeSentence} />
         <ErrorHistory errorHistory={this.state.errorHistory} sentences={this.state.sentences} handleSentenceIntoCharacterGroups={this.separateSentenceInfoCharacterGroups} handleKanaToRomaji={this.kanaToRomaji} />
@@ -945,21 +942,23 @@ var AppBox = React.createClass({
 
 var VisualFeedback = React.createClass({
   render: function() {
+    var _this = this;
     var inputIncorrect = this.props.inputIncorrect;
     var currentSentencePosition = this.props.currentSentencePosition;
     var characterGroupNodes = this.props.characterGroups.map(function(characterGroup, index) {
       var listItem;
+      var romajiOptions = _this.props.handleKanaToRomaji(characterGroup).map(function(character) { return '"' + character.replace(' ', '{space}') +  '"' }).join(', ');
 
       if (index < currentSentencePosition) {
-        listItem = <li className="correct" data-position={index}>{characterGroup}</li>
+        listItem = <li className="correct" data-position={index} data-romajis={romajiOptions}>{characterGroup}</li>
       } else if (index == currentSentencePosition) {
         if (inputIncorrect) {
-          listItem = <li className="incorrect" data-position={index}>{characterGroup}</li>;
+          listItem = <li className="incorrect" data-position={index} data-romajis={romajiOptions}>{characterGroup}</li>;
         } else {
-          listItem = <li data-position={index}>{characterGroup}</li>;
+          listItem = <li data-position={index} data-romajis={romajiOptions}>{characterGroup}</li>;
         }
       } else {
-        listItem = <li data-position={index}>{characterGroup}</li>;
+        listItem = <li data-position={index} data-romajis={romajiOptions}>{characterGroup}</li>;
       }
 
       return (listItem);
@@ -1027,7 +1026,7 @@ var SentenceInformation = React.createClass({
   render: function() {
     return (
       <div className="additional-sentence-information">
-        <h2 className="mini muted">Advance kana sentence &amp; translation</h2>
+        <h2 className="mini invert muted">Advance kana sentence &amp; translation</h2>
         <dl>
           <dt className="real-word-sentence">{this.props.sentence.bun}</dt>
           <dd className="english-sentence-translation">{this.props.sentence.eng}</dd>
@@ -1070,7 +1069,7 @@ var ErrorHistory = React.createClass({
         var romajiNodes;
 
         romajiNodes = characterGroupRomajis.map(function(romaji) {
-          return (<li>{romaji}</li>);
+          return (<li>{romaji.replace(' ', '{space}')}</li>);
         });
 
         listItem = <li className="list-group-item">
