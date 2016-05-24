@@ -216,7 +216,7 @@ var AppBox = React.createClass({
       りょ: ['ryo'],
       わ: ['wa'],
       を: ['wo'],
-      ん: ['nn', 'n '],
+      ん: ['nn', 'n ', "n'"],
       ゐ: ['wi'],
       ゑ: ['we'],
       きぇ: ['kye'],
@@ -401,7 +401,7 @@ var AppBox = React.createClass({
       っりゅ: ['rryu'],
       っりょ: ['rryo'],
       っわ: ['wwa'],
-      っん: ['xtsunn', 'xtsun '],
+      っん: ['xtsunn', 'xtsun ', "xtsun'"],
       っゐ: ['wwi'],
       っゑ: ['wwe'],
       っきぇ: ['kkye'],
@@ -597,7 +597,7 @@ var AppBox = React.createClass({
       リョ: ["RYO"],
       ワ: ["WA"],
       ヲ: ["WO"],
-      ン: ["NN", "N "],
+      ン: ["NN", "N ", "N'"],
       ヰ: ["WI"],
       ヱ: ["WE"],
       キェ: ["KYE"],
@@ -947,7 +947,7 @@ var VisualFeedback = React.createClass({
     var currentSentencePosition = this.props.currentSentencePosition;
     var characterGroupNodes = this.props.characterGroups.map(function(characterGroup, index) {
       var listItem;
-      var romajiOptions = _this.props.handleKanaToRomaji(characterGroup).map(function(character) { return '"' + character.replace(' ', '{space}') +  '"' }).join(', ');
+      var romajiOptions = _this.props.handleKanaToRomaji(characterGroup).map(function(character) { return character.replace(' ', '{space}') }).join(', ');
 
       if (index < currentSentencePosition) {
         listItem = <li className="correct" data-position={index} data-romajis={romajiOptions}>{characterGroup}</li>
