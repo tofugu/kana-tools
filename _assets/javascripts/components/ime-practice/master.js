@@ -11,10 +11,12 @@ var AppBox = React.createClass({
       activeSentenceCharacterGroups: [],
       activeCharacterGroup: {},
       currentSentencePosition: 0,
-      isInputIncorrect: false
+      isInputIncorrect: false,
+      errorHistory: []
     };
   },
   componentDidMount: function() {
+    var errorHistory;
     $.ajax({
       url: this.props.url,
       dataType: 'json',
@@ -27,6 +29,12 @@ var AppBox = React.createClass({
         console.error(this.props.url, status, err.toString());
       }.bind(this)
     });
+
+    errorHistory = JSON.parse(localStorage.getItem('errorHistory')) || [];
+    this.setState({errorHistory: errorHistory});
+  },
+  componentDidUpdate: function() {
+    localStorage.setItem('errorHistory', JSON.stringify(this.state.errorHistory));
   },
   handleInputCheck: function(input) {
     var correctInputs = this.state.activeCharacterGroup.romajis;
@@ -53,6 +61,29 @@ var AppBox = React.createClass({
       isInputIncorrect = true;
     }
     this.setState({isInputIncorrect: isInputIncorrect});
+
+    if (isInputIncorrect) {
+      // Add incorrect input to error history
+      var errorHistory = this.state.errorHistory;
+      var errorHistoryFirstElement = errorHistory[0];
+      var activeSentence = this.state.activeSentence;
+      var currentSentencePosition = this.state.currentSentencePosition;
+
+      // Checks if top element matches the current sentence. If so then add the current sentence position.
+      // If not, then create a new hash object.
+      if (errorHistoryFirstElement && errorHistoryFirstElement.id == activeSentence.id) {
+        if (errorHistoryFirstElement.positions.indexOf(currentSentencePosition) == -1) {
+          errorHistoryFirstElement.positions.push(currentSentencePosition);
+          errorHistory.shift();
+          errorHistory.unshift(errorHistoryFirstElement);
+          this.setState({errorHistory: errorHistory});
+        }
+      } else {
+        errorHistoryFirstElement = { id: activeSentence.id, positions: [currentSentencePosition] }
+        errorHistory.unshift(errorHistoryFirstElement);
+        this.setState({errorHistory: errorHistory});
+      }
+    }
 
     return { inputComplete: false };
   },
@@ -840,7 +871,8 @@ var AppBox = React.createClass({
       '、': [','],
       '。': ['.'],
       '！': ['!'],
-      '・': ['/']
+      '・': ['/'],
+      '？': ['?']
     }
     return kanaTable[kana]
   },
@@ -863,28 +895,10 @@ var AppBox = React.createClass({
     });
   },
   setActiveSentence: function() {
-    var _this = this;
     var randomSentence = this.selectRandomSentence();
-    var randomSentenceKana = randomSentence.kana;
-    var randomSentenceCharacterGroups = [];
+    var randomSentenceCharacterGroups;
 
-    while (randomSentenceKana.length > 0) {
-      var potentialGroupThreeChar = randomSentenceKana.substring(0,3);
-      var potentialGroupTwoChar = randomSentenceKana.substring(0,2);
-      var potentialGroupRomajiThreeChar = _this.kanaToRomaji(potentialGroupThreeChar);
-      var potentialGroupRomajiTwoChar = _this.kanaToRomaji(potentialGroupTwoChar);
-
-      if (potentialGroupRomajiThreeChar) {
-        randomSentenceCharacterGroups.push(potentialGroupThreeChar);
-        randomSentenceKana = randomSentenceKana.slice(3);
-      } else if (potentialGroupRomajiTwoChar) {
-        randomSentenceCharacterGroups.push(potentialGroupTwoChar);
-        randomSentenceKana = randomSentenceKana.slice(2);
-      } else {
-        randomSentenceCharacterGroups.push(randomSentenceKana.substring(0,1));
-        randomSentenceKana = randomSentenceKana.slice(1);
-      }
-    }
+    randomSentenceCharacterGroups = this.separateSentenceInfoCharacterGroups(randomSentence.kana);
 
     this.setState({
       activeSentence: randomSentence,
@@ -893,12 +907,37 @@ var AppBox = React.createClass({
 
     this.setActiveCharacterGroup(0, randomSentenceCharacterGroups);
   },
+  separateSentenceInfoCharacterGroups: function(sentence) {
+    var _this = this;
+    var sentenceCharacterGroups = [];
+
+    while (sentence.length > 0) {
+      var potentialGroupThreeChar = sentence.substring(0,3);
+      var potentialGroupTwoChar = sentence.substring(0,2);
+      var potentialGroupRomajiThreeChar = _this.kanaToRomaji(potentialGroupThreeChar);
+      var potentialGroupRomajiTwoChar = _this.kanaToRomaji(potentialGroupTwoChar);
+
+      if (potentialGroupRomajiThreeChar) {
+        sentenceCharacterGroups.push(potentialGroupThreeChar);
+        sentence = sentence.slice(3);
+      } else if (potentialGroupRomajiTwoChar) {
+        sentenceCharacterGroups.push(potentialGroupTwoChar);
+        sentence = sentence.slice(2);
+      } else {
+        sentenceCharacterGroups.push(sentence.substring(0,1));
+        sentence = sentence.slice(1);
+      }
+    }
+
+    return sentenceCharacterGroups;
+  },
   render: function() {
     return (
       <div className="app-box">
         <VisualFeedback characterGroups={this.state.activeSentenceCharacterGroups} inputIncorrect={this.state.isInputIncorrect} currentSentencePosition={this.state.currentSentencePosition} />
         <UserInput onInputCheck={this.handleInputCheck} onSentenceComplete={this.handleSentenceComplete} inputIncorrect={this.state.isInputIncorrect} />
         <SentenceInformation sentence={this.state.activeSentence} />
+        <ErrorHistory errorHistory={this.state.errorHistory} sentences={this.state.sentences} handleSentenceIntoCharacterGroups={this.separateSentenceInfoCharacterGroups} handleKanaToRomaji={this.kanaToRomaji} />
       </div>
     );
   }
@@ -923,9 +962,7 @@ var VisualFeedback = React.createClass({
         listItem = <li data-position={index}>{characterGroup}</li>;
       }
 
-      return (
-        listItem
-      );
+      return (listItem);
     });
     return (
       <div className="basic-kana-sentence">
@@ -1000,7 +1037,73 @@ var SentenceInformation = React.createClass({
   }
 });
 
-var ErrorHistory;
+var ErrorHistory = React.createClass({
+  render: function() {
+    var _this = this;
+    var errorHistory = this.props.errorHistory;
+    var sentencesNodes = this.props.errorHistory.map(function(sentenceErrorInfo, index) {
+      var cardItem;
+      var characterGroupsNodes;
+      var sentence;
+      var characterGroups;
+      var characterGroupsErrorNodes;
+
+      sentence = $.grep(_this.props.sentences, function(s){ return s.id == sentenceErrorInfo.id; })[0];
+      characterGroups = _this.props.handleSentenceIntoCharacterGroups(sentence.kana);
+
+      characterGroupsNodes = characterGroups.map(function(characterGroup, index) {
+        var listItem;
+
+        if (sentenceErrorInfo.positions.indexOf(index) == -1) {
+          listItem = <li data-position={index}>{characterGroup}</li>
+        } else {
+          listItem = <li className="incorrect" data-position={index}>{characterGroup}</li>;
+        }
+
+        return (listItem);
+      });
+
+      characterGroupsErrorNodes = sentenceErrorInfo.positions.map(function(position) {
+        var characterGroup = characterGroups[position];
+        var characterGroupRomajis = _this.props.handleKanaToRomaji(characterGroup);
+        var listItem;
+        var romajiNodes;
+
+        romajiNodes = characterGroupRomajis.map(function(romaji) {
+          return (<li>{romaji}</li>);
+        });
+
+        listItem = <li className="list-group-item">
+          <ul className="kana-error">
+            <li lang="ja">{characterGroups[position]}</li>
+            {romajiNodes}
+          </ul>
+        </li>
+
+        return listItem;
+      });
+
+      cardItem = <div className="card">
+        <div className="card-block">
+          <ul lang="ja" className="sentence">
+            {characterGroupsNodes}
+          </ul>
+        </div>
+        <ul className="list-group list-group-flush errors">
+          {characterGroupsErrorNodes}
+        </ul>
+      </div>
+
+      return cardItem;
+    });
+    return (
+      <div className="error-history">
+        <h2 className="mini muted">Error history</h2>
+        {sentencesNodes}
+      </div>
+    );
+  }
+});
 
 var wrapper = document.getElementById('content')
 ReactDOM.render(
