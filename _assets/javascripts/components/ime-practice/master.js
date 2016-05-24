@@ -33,6 +33,9 @@ var AppBox = React.createClass({
   componentDidUpdate: function() {
     localStorage.setItem('errorHistory', JSON.stringify(this.state.errorHistory));
   },
+  handleClearErrorHistory: function(input) {
+    this.setState({errorHistory: []});
+  },
   handleInputCheck: function(input) {
     var correctInputs = this.state.activeCharacterGroup.romajis;
     var correctInputsSet = new Set(correctInputs);
@@ -934,7 +937,7 @@ var AppBox = React.createClass({
         <VisualFeedback characterGroups={this.state.activeSentenceCharacterGroups} inputIncorrect={this.state.isInputIncorrect} currentSentencePosition={this.state.currentSentencePosition} handleKanaToRomaji={this.kanaToRomaji} />
         <UserInput onInputCheck={this.handleInputCheck} onSentenceComplete={this.handleSentenceComplete} inputIncorrect={this.state.isInputIncorrect} />
         <SentenceInformation sentence={this.state.activeSentence} />
-        <ErrorHistory errorHistory={this.state.errorHistory} sentences={this.state.sentences} handleSentenceIntoCharacterGroups={this.separateSentenceInfoCharacterGroups} handleKanaToRomaji={this.kanaToRomaji} />
+        <ErrorHistory errorHistory={this.state.errorHistory} sentences={this.state.sentences} handleSentenceIntoCharacterGroups={this.separateSentenceInfoCharacterGroups} handleKanaToRomaji={this.kanaToRomaji} handleClearErrorHistory={this.handleClearErrorHistory} />
       </div>
     );
   }
@@ -1098,6 +1101,9 @@ var ErrorHistory = React.createClass({
     return (
       <div className="error-history">
         <h2 className="mini muted">Error history</h2>
+        <div className="clear-error-history">
+          <button type="button" className="btn btn-primary btn-sm" onClick={this.props.handleClearErrorHistory}>Clear</button>
+        </div>
         {sentencesNodes}
       </div>
     );

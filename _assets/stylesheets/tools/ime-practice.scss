@@ -75,6 +75,7 @@
     }
   }
   .error-history {
+    position: relative;
     background-color: $gray-lighter;
     ul.sentence { 
       font-size: 1.25rem;
@@ -103,6 +104,11 @@
           border-radius: 3px;
         }
       }
+    }
+    .clear-error-history {
+      position: absolute;
+      top: 2.5rem;
+      right: 3rem;
     }
   }
   .user-input {
