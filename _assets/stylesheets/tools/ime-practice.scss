@@ -63,7 +63,7 @@
     ul.sentence { 
       font-size: 1.25rem;
       li {
-        &.incorrect { font-weight: bold; }
+        &.incorrect { font-weight: bold; background-color: scale-color($red, $lightness: 90%); border: thin solid scale-color($red, $lightness: 70%); }
       }
     }
     ul.kana-error {
