@@ -119,15 +119,29 @@
         color: red;
       }
     }
+    ul.sentence {
+      display: inline-block;
+      li {
+        color: $white;
+        font-size: 3rem;
+        &:nth-last-child(2) {
+          margin-right: 0.15em;
+        }
+      }
+    }
     input[type=text] {
-      width: 100%;
+      display: inline-block;
+      min-width: 1em;
+      width: 1em;
+      height: 3rem * 1.5;
+      max-width: 100%;
       background-color: transparent;
       border: none;
-      border-bottom: thin solid rgba($white, 0.25);
       color: $white;
-      font-size: 2rem;
-      font-weight: bold;
+      font-size: 3rem;
       outline: none;
+      vertical-align: bottom;
+      line-height: 1.5;
     }
   }
 }

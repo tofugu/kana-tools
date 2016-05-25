@@ -150,11 +150,11 @@ var AppBox = React.createClass({
       じゅ: ['ju', 'jyu'],
       じょ: ['jo', 'jyo'],
       た: ['ta'],
-      ち: ['chi'],
-      ちゃ: ['cha'],
-      ちゅ: ['chu'],
-      ちょ: ['cho'],
-      つ: ['tsu'],
+      ち: ['chi', 'ti'],
+      ちゃ: ['cha', 'cya'],
+      ちゅ: ['chu', 'cyu'],
+      ちょ: ['cho', 'cyo'],
+      つ: ['tsu', 'tu'],
       て: ['te'],
       と: ['to'],
       だ: ['da'],
@@ -340,7 +340,7 @@ var AppBox = React.createClass({
       っちゃ: ['ccha'],
       っちゅ: ['cchu'],
       っちょ: ['ccho'],
-      っつ: ['ttsu'],
+      っつ: ['ttsu', 'ttsu'],
       って: ['tte'],
       っと: ['tto'],
       っだ: ['dda'],
@@ -531,11 +531,11 @@ var AppBox = React.createClass({
       ジュ: ["JU", "JYU"],
       ジョ: ["JO", "JYO"],
       タ: ["TA"],
-      チ: ["CHI"],
+      チ: ["CHI", "TI"],
       チャ: ["CHA"],
       チュ: ["CHU"],
       チョ: ["CHO"],
-      ツ: ["TSU"],
+      ツ: ["TSU", "TU"],
       テ: ["TE"],
       ト: ["TO"],
       ダ: ["DA"],
@@ -721,7 +721,7 @@ var AppBox = React.createClass({
       ッチャ: ["CCHA"],
       ッチュ: ["CCHU"],
       ッチョ: ["CCHO"],
-      ッツ: ["TTSU"],
+      ッツ: ["TTSU", "TTU"],
       ッテ: ["TTE"],
       ット: ["TTO"],
       ッダ: ["DDA"],
@@ -935,7 +935,7 @@ var AppBox = React.createClass({
     return (
       <div className="app-box">
         <VisualFeedback characterGroups={this.state.activeSentenceCharacterGroups} inputIncorrect={this.state.isInputIncorrect} currentSentencePosition={this.state.currentSentencePosition} handleKanaToRomaji={this.kanaToRomaji} />
-        <UserInput onInputCheck={this.handleInputCheck} onSentenceComplete={this.handleSentenceComplete} inputIncorrect={this.state.isInputIncorrect} />
+        <UserInput characterGroups={this.state.activeSentenceCharacterGroups} currentSentencePosition={this.state.currentSentencePosition} onInputCheck={this.handleInputCheck} onSentenceComplete={this.handleSentenceComplete} inputIncorrect={this.state.isInputIncorrect} />
         <SentenceInformation sentence={this.state.activeSentence} />
         <ErrorHistory errorHistory={this.state.errorHistory} sentences={this.state.sentences} handleSentenceIntoCharacterGroups={this.separateSentenceInfoCharacterGroups} handleKanaToRomaji={this.kanaToRomaji} handleClearErrorHistory={this.handleClearErrorHistory} />
       </div>
@@ -981,15 +981,20 @@ var UserInput = React.createClass({
   getInitialState: function() {
     return { userInput: '' };
   },
+  handleFocusInput: function(e) {
+    document.getElementById('user-text-input').focus();
+  },
   handleUserInputChange: function(e) {
     this.setState({userInput: e.target.value});
     var inputCheck = this.props.onInputCheck(e.target.value);
-
+    e.target.style.width = e.target.value.length + 'em';
     if (inputCheck.inputComplete) {
+      e.target.style.width = '0';
       this.setState({userInput: ''});
     }
 
     if (inputCheck.sentenceComplete) {
+      e.target.style.width = '0';
       this.props.onSentenceComplete();
     }
   },
@@ -1000,25 +1005,40 @@ var UserInput = React.createClass({
   },
   render: function () {
     var userInputClass;
+    var currentSentencePosition = this.props.currentSentencePosition;
+
     if (this.props.inputIncorrect) {
       userInputClass = 'user-input incorrect'
     } else {
       userInputClass = 'user-input'
     };
+
+    var characterGroupNodes = this.props.characterGroups.map(function(characterGroup, index) {
+      var listItem = <li data-position={index}>{characterGroup}</li>;
+      return (listItem);
+    }).slice(0,currentSentencePosition);
+
     return (
-      <div className={userInputClass}>
+      <div className={userInputClass} onClick={this.handleFocusInput}>
         <h2 className="mini invert muted">Type out the sentence in romaji</h2>
-        <input
-          type="text"
-          name="user-input"
-          value={this.state.userInput}
-          onChange={this.handleUserInputChange}
-          autocomplete="off"
-          autocorrect="off"
-          autocapitalize="off"
-          spellcheck="false"
-          autofocus
-        />
+        <ul lang="ja" className="sentence">
+          {characterGroupNodes}
+          <li>
+            <input
+              id="user-text-input"
+              type="text"
+              name="user-input"
+              value={this.state.userInput}
+              maxLength="4"
+              onChange={this.handleUserInputChange}
+              autoComplete="off"
+              autoCorrect="off"
+              autoCapitalize="off"
+              spellcheck="false"
+              autoFocus={true}
+            />
+          </li>
+        </ul>
       </div>
     );
   }
