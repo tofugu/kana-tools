@@ -16,7 +16,7 @@ var AppBox = React.createClass({
     };
   },
   componentDidMount: function() {
-    var errorHistory = JSON.parse(localStorage.getItem('errorHistory')) || [];
+    var errorHistory = JSON.parse(localStorage.getItem('imePractice#errorHistory')) || [];
     $.ajax({
       url: this.props.url,
       dataType: 'json',
@@ -31,7 +31,7 @@ var AppBox = React.createClass({
     });
   },
   componentDidUpdate: function() {
-    localStorage.setItem('errorHistory', JSON.stringify(this.state.errorHistory));
+    localStorage.setItem('imePractice#errorHistory', JSON.stringify(this.state.errorHistory));
   },
   handleClearErrorHistory: function(input) {
     this.setState({errorHistory: []});
