@@ -340,7 +340,7 @@ var AppBox = React.createClass({
       っちゃ: ['ccha', 'ccya'],
       っちゅ: ['cchu', 'ccyu'],
       っちょ: ['ccho', 'ccyo'],
-      っつ: ['ttsu', 'ttsu'],
+      っつ: ['ttsu', 'ttu'],
       って: ['tte'],
       っと: ['tto'],
       っだ: ['dda'],
