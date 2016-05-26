@@ -20,5 +20,12 @@
 // Import partials from `sass_dir` (defaults to `_sass`)
 @import
   "partials/layout",
+  "partials/nav"
+;
+
+// Tools specific CSS
+@import
+  "home",
   "tools/ime-practice"
 ;
+

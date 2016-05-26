@@ -3,21 +3,25 @@ layout: default
 ---
 
 <div class="home">
+  <div class="container">
+    <h1 class="mini">What is kana.tools</h1>
+    <div class="intro">
+      <p><b>kana.tools</b> is a repository of small Japanese language tools created by <a href="https://www.tofugu.com/about/people" title="View Tofugu staff page">Tofugu</a> developers and friends. Some tools may be useful. Some not so much. They are all side experiments.</p>
+    </div>
 
-  <h1 class="page-heading">Posts</h1>
-
-  <ul class="post-list">
-    {% for post in site.posts %}
-      <li>
-        <span class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</span>
-
-        <h2>
-          <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
-        </h2>
-      </li>
-    {% endfor %}
-  </ul>
-
-  <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | prepend: site.baseurl }}">via RSS</a></p>
-
+    <h1 class="mini">Tools</h1>
+    <div class="card-columns">
+      {% for tool in site.tools %}
+        <a href="{{ tool.url }}">
+          <div class="card" title="View {{ tool.title }}">
+            <div class="card-block">
+              <h2 class="card-title mini">{{ tool.title }}</h2>
+              <p class="card-text">{{ tool.description }}</h2>
+              <p class="card-text"><small class="text-muted">By {{ tool.authors | sort | join: ', ' | split: '' | reverse | join: '' | replace_first: " ,", " dna " | split: '' | reverse | join: '' }}</small></p>
+            </div>
+          </div>
+        </a>
+      {% endfor %}
+    </div>
+  </div>
 </div>

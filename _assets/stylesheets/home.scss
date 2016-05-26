@@ -1,0 +1,16 @@
+.home {
+  margin-top: 4rem;
+  a { color: $magenta; }
+  h1, h2 , h3, h4, h5, h6 { color: $gray-light; }
+  .intro p { font-size: 2rem; margin-bottom: 2rem; }
+  .card {
+    &:hover { 
+      background-color: $magenta;
+      h2, p, small { color: $white; }
+    }
+    p { color: $black; }
+    h2 {
+      color: $magenta;
+    }
+  }
+}

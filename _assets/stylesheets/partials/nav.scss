@@ -1,0 +1,30 @@
+nav.nav-header {
+  position: fixed;
+  display: block;
+  bottom: 1rem;
+  right: 1rem;
+  font-size: 1rem;
+  z-index: 10000;
+  a {
+    display: inline-block;
+    width: 2rem;
+    height: 2rem;
+    color: $white;
+    background-color: $base01;
+    line-height: 2rem;
+    text-align: center;
+    border-radius: 50%;
+    opacity: 0.5;
+    &:hover { opacity: 1; }
+  }
+  ul {
+    margin: 0;
+    padding: 0;
+    li {
+      display: inline-block;
+      margin: 0;
+      padding: 0;
+      &:not(:last-child) { margin-right: 0.25em; }
+    }
+  }
+}
