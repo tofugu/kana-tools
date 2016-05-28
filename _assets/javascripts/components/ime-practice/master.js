@@ -1034,8 +1034,12 @@ var UserInput = React.createClass({
     if (inputCheck.inputComplete) {
       e.target.style.width = '0';
       if (inputCheck.newUserInput !== undefined) {
-        this.setState({userInput: inputCheck.newUserInput});
-        // TODO: handle ん。 case
+        var _this = this;
+        window.setTimeout(function () {
+          $(_this.refs.userInputElement).val(inputCheck.newUserInput);
+          var e = {"target": _this.refs.userInputElement};
+          _this.handleUserInputChange(e);
+        }, 1);
       }
       else {
         this.setState({userInput: ''});
@@ -1085,6 +1089,7 @@ var UserInput = React.createClass({
               autoCapitalize="off"
               spellcheck="false"
               autoFocus={true}
+              ref="userInputElement"
             />
           </li>
         </ul>
