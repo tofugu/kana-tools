@@ -147,3 +147,23 @@
     }
   }
 }
+
+@include media-breakpoint-down(sm) {
+  .ime-practice {
+    .basic-kana-sentence {
+      ul {
+        li {
+          font-size: 1.25rem;
+        }
+      }
+    }
+    .user-input {
+      ul.sentence {
+        li {
+          font-size: 1.25rem;
+        }
+      }
+      input[type=text] { font-size: 1.25rem; height: 1.25rem * 1.5; }
+    }
+  }
+}
