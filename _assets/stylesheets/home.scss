@@ -1,7 +1,13 @@
 .home {
-  margin-top: 4rem;
+  margin-top: 2rem;
   a { color: $magenta; }
   h1, h2 , h3, h4, h5, h6 { color: $gray-light; }
+  header {
+    margin-bottom: 2rem;
+    img {
+      margin: 0 auto;
+    }
+  }
   .intro p { font-size: 2rem; margin-bottom: 2rem; }
   .card {
     &:hover { 
