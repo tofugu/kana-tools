@@ -1,3 +1,9 @@
+var N_BOUNDARIES = [
+  "k", "g", "s", "z", "t", "d", "c", "j", "h", "f", "b", "p", "r", "m", "n", "l", "x", "v", "w", "q",
+  ".", ",", "!", "?", "/",
+  "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"
+];
+
 var AppBox = React.createClass({
   getInitialState: function() {
     return {
@@ -43,6 +49,21 @@ var AppBox = React.createClass({
     // Check if the user input completely matches with the current character group acceptable romaji
     if (correctInputsSet.has(input)) {
       return this.handleInputComplete();
+    }
+
+    // Check for ん+consonant, in which case we will accept "n" for ん
+    var thisGroupIsSyllabicN = ["ん", "ン"].indexOf(this.state.activeCharacterGroup.kana) > -1;
+    var nextGroupExists = this.state.nextCharacterGroup !== undefined;
+    var nextGroupIsNBoundary = this.state.nextCharacterGroup.romajis.some(function(romaji) {
+      return N_BOUNDARIES.indexOf(romaji.toLowerCase().substr(0, 1)) > -1;
+    });
+    var inputIsNAndBoundary = input.length == 2 &&
+      input.toLowerCase().substr(0, 1) == "n" &&
+      N_BOUNDARIES.indexOf(input.toLowerCase().substr(1, 2)) > -1;
+    if (thisGroupIsSyllabicN && nextGroupExists && nextGroupIsNBoundary && inputIsNAndBoundary) {
+        var complete = this.handleInputComplete();
+        complete.newUserInput = input.substr(1, 2);
+        return complete;
     }
 
     // Continue if user input does not complete match current character group of accetable romaji
@@ -898,8 +919,19 @@ var AppBox = React.createClass({
       romajis: activeCharacterGroupRomajis
     }
 
+    var nextGroupInfo = undefined;
+    if (position < sentenceCharacterGroups.length-1) {
+      var nextGroupKana = sentenceCharacterGroups[position+1];
+      var nextGroupRomajis = this.kanaToRomaji(nextGroupKana);
+      nextGroupInfo = {
+        kana: nextGroupKana,
+        romajis: nextGroupRomajis
+      }
+    }
+
     this.setState({
       activeCharacterGroup: activeCharacterGroupInfo,
+      nextCharacterGroup: nextGroupInfo,
       currentSentencePosition: position,
       isInputIncorrect: false
     });
@@ -998,9 +1030,20 @@ var UserInput = React.createClass({
     this.setState({userInput: e.target.value});
     var inputCheck = this.props.onInputCheck(e.target.value);
     e.target.style.width = e.target.value.length + 'em';
+
     if (inputCheck.inputComplete) {
       e.target.style.width = '0';
-      this.setState({userInput: ''});
+      if (inputCheck.newUserInput !== undefined) {
+        var _this = this;
+        window.setTimeout(function () {
+          $(_this.refs.userInputElement).val(inputCheck.newUserInput);
+          var e = {"target": _this.refs.userInputElement};
+          _this.handleUserInputChange(e);
+        }, 1);
+      }
+      else {
+        this.setState({userInput: ''});
+      }
     }
 
     if (inputCheck.sentenceComplete) {
@@ -1046,6 +1089,7 @@ var UserInput = React.createClass({
               autoCapitalize="off"
               spellcheck="false"
               autoFocus={true}
+              ref="userInputElement"
             />
           </li>
         </ul>
